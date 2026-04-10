@@ -444,6 +444,13 @@ textarea { resize: none; }
 .mobile-contact-btn { z-index: 90; }
 
 /* ── CURSOR DOT TRAIL ── */
+/* Hide the OS mouse pointer — dots replace it */
+html, body, a, button, .project-item, .close-button,
+.hamburger, .mobile-contact-btn, .send-button,
+.header-label a, .tag { cursor: none; }
+/* Keep text cursor on text inputs */
+input, textarea, [contenteditable] { cursor: text; }
+
 .cursor-dot {
   position: fixed;
   top: 0; left: 0;
@@ -463,6 +470,9 @@ textarea { resize: none; }
 body.detail-open .cursor-dot,
 body.cursor-over-input .cursor-dot { opacity: 0; }
 @media (max-width: 767px) {
+  html, body, a, button, .project-item, .close-button,
+  .hamburger, .mobile-contact-btn, .send-button,
+  .header-label a, .tag { cursor: auto; }
   .cursor-dot { display: none; }
 }
 </style>
