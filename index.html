@@ -442,10 +442,38 @@ textarea { resize: none; }
   .index-column.mobile-overlay .project-item { height: auto !important; }
 }
 .mobile-contact-btn { z-index: 90; }
+
+/* ── CURSOR DOT TRAIL ── */
+.cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  border-radius: 50%;
+  background: #000;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  will-change: transform;
+}
+.cursor-dot.is-visible { opacity: 1; }
+.cursor-dot--1 { width: 27px; height: 27px; }
+.cursor-dot--2 { width: 18px; height: 18px; }
+.cursor-dot--3 { width: 12px; height: 12px; }
+.cursor-dot--4 { width: 8px;  height: 8px;  }
+body.detail-open .cursor-dot,
+body.cursor-over-input .cursor-dot { opacity: 0; }
+@media (max-width: 767px) {
+  .cursor-dot { display: none; }
+}
 </style>
 </head>
 <body>
 
+<!-- Cursor dot trail: 4 dots of different sizes, chained follow -->
+<div class="cursor-dot cursor-dot--1" id="cursorDot1"></div>
+<div class="cursor-dot cursor-dot--2" id="cursorDot2"></div>
+<div class="cursor-dot cursor-dot--3" id="cursorDot3"></div>
+<div class="cursor-dot cursor-dot--4" id="cursorDot4"></div>
 
 <header class="site-header">
   <div class="site-header__inner">
@@ -754,6 +782,52 @@ mobileContactClose.addEventListener('click', () => {
 renderList();
 attachMobileClose();
 renderState();
+
+// ── Cursor dot trail — each dot chases the previous one ──
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+
+const dots = [
+  { el: document.getElementById('cursorDot1'), x: mouseX, y: mouseY, ease: 0.38 },
+  { el: document.getElementById('cursorDot2'), x: mouseX, y: mouseY, ease: 0.28 },
+  { el: document.getElementById('cursorDot3'), x: mouseX, y: mouseY, ease: 0.20 },
+  { el: document.getElementById('cursorDot4'), x: mouseX, y: mouseY, ease: 0.14 },
+];
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  dots.forEach(d => d.el.classList.add('is-visible'));
+
+  // Hide dots when hovering over text inputs (text cursor context)
+  const t = e.target;
+  const isTextInput = t && (
+    t.tagName === 'INPUT' ||
+    t.tagName === 'TEXTAREA' ||
+    t.isContentEditable
+  );
+  document.body.classList.toggle('cursor-over-input', isTextInput);
+});
+document.addEventListener('mouseleave', () => {
+  dots.forEach(d => d.el.classList.remove('is-visible'));
+});
+document.addEventListener('mouseenter', () => {
+  dots.forEach(d => d.el.classList.add('is-visible'));
+});
+
+function animateDots() {
+  let targetX = mouseX;
+  let targetY = mouseY;
+  dots.forEach(d => {
+    d.x += (targetX - d.x) * d.ease;
+    d.y += (targetY - d.y) * d.ease;
+    d.el.style.transform = `translate(${d.x}px, ${d.y}px) translate(-50%, -50%)`;
+    targetX = d.x;
+    targetY = d.y;
+  });
+  requestAnimationFrame(animateDots);
+}
+animateDots();
 
 </script>
 </body>
