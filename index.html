@@ -455,7 +455,6 @@ input, textarea, [contenteditable] { cursor: text; }
   position: fixed;
   top: 0; left: 0;
   border-radius: 50%;
-  background: #000;
   pointer-events: none;
   z-index: 9999;
   opacity: 0;
@@ -463,11 +462,11 @@ input, textarea, [contenteditable] { cursor: text; }
   will-change: transform;
 }
 .cursor-dot.is-visible { opacity: 1; }
-.cursor-dot--1 { width: 27px; height: 27px; }
-.cursor-dot--2 { width: 18px; height: 18px; }
-.cursor-dot--3 { width: 12px; height: 12px; }
-.cursor-dot--4 { width: 8px;  height: 8px;  }
-body.detail-open .cursor-dot,
+/* 4 different tag colors */
+.cursor-dot--1 { width: 27px; height: 27px; background: #FF00FF; } /* magenta */
+.cursor-dot--2 { width: 18px; height: 18px; background: #00E5FF; } /* cyan */
+.cursor-dot--3 { width: 12px; height: 12px; background: #CCFF00; } /* lime */
+.cursor-dot--4 { width: 8px;  height: 8px;  background: #FF0000; } /* red */
 body.cursor-over-input .cursor-dot { opacity: 0; }
 @media (max-width: 767px) {
   html, body, a, button, .project-item, .close-button,
