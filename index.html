@@ -387,8 +387,19 @@ textarea { resize: none; }
   .brand { font-size: 30px; }
   .header-nav { gap: 20px; }
   .header-label { font-size: 15px; }
-  .project-row { grid-template-columns: 1fr !important; min-height: auto; }
+  .project-row { grid-template-columns: 1fr !important; min-height: 280px; }
   .project-thumb { min-height: 200px; }
+
+  /* Mobile hover: image fills row, title overlays in white on top (no height shrink) */
+  .project-item:hover .project-meta,
+  .project-item:active .project-meta {
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: var(--gap);
+    background: transparent;
+    z-index: 2;
+  }
+  .project-item:hover .project-title,
+  .project-item:active .project-title { color: #fff; }
 
   /* Home: show contact button, hide contact column */
   .contact-column { display: none !important; }
@@ -430,9 +441,11 @@ textarea { resize: none; }
   .index-column.mobile-overlay .project-row { grid-template-columns: 1fr !important; }
   .index-column.mobile-overlay .project-item { height: auto !important; }
 }
+.mobile-contact-btn { z-index: 90; }
 </style>
 </head>
 <body>
+
 
 <header class="site-header">
   <div class="site-header__inner">
@@ -741,6 +754,7 @@ mobileContactClose.addEventListener('click', () => {
 renderList();
 attachMobileClose();
 renderState();
+
 </script>
 </body>
 </html>
