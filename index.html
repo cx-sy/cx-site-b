@@ -1117,7 +1117,27 @@ mobileContactClose.addEventListener('click', () => {
 
 renderList();
 attachMobileClose();
+
+// ── URL Parameter 자동 상태 트리거 (Figma import용) ──
+const urlParams = new URLSearchParams(location.search);
+const openParam = urlParams.get('open');
+const contactParam = urlParams.get('contact');
+
+if (openParam) {
+  const id = Number(openParam);
+  if (!isNaN(id) && id > 0 && id <= projects.length) {
+    activeId = id;
+  }
+}
+
 renderState();
+
+if (contactParam === 'open') {
+  // DOM 준비 완료 후 모바일 컨택트 팝업 자동 표시
+  requestAnimationFrame(() => {
+    mobileContactOverlay.classList.add('is-visible');
+  });
+}
 
 // ── Cursor dot trail — each dot chases the previous one ──
 let mouseX = window.innerWidth / 2;
